@@ -1,37 +1,42 @@
-/// Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
-///
-/// You may assume that each input would have exactly one solution, and you may not use the same element twice.
-///
-/// You can return the answer in any order.
-pub fn _01_two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
+// Definition for singly-linked list.
+#[derive(PartialEq, Eq, Clone, Debug)]
+pub struct ListNode {
+  pub val: i32,
+  pub next: Option<Box<ListNode>>
+}
+
+impl ListNode {
+  #[inline]
+  pub fn new(val: i32) -> Self {
+    ListNode {
+      next: None,
+      val
+    }
+  }
+}
+
+
+pub fn add_two_numbers(l1: Option<Box<ListNode>>, l2: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
+    // Constrains
+
+    // The number of nodes in each linked list is in the range [1, 100].
+    // 0 <= Node.val <= 9
+    // It is guaranteed that the list represents a number that does not have leading zeros.
     
-    // O(n2) solution. Longer time, less space. Brute Force.
-    // for i in 0..nums.len() {
-    //     for j in i+1..nums.len() {
-    //         if nums[i] + nums[j] == target {
-    //             return vec![i as i32, j as i32];
-    //         }
-    //     }
-    // }
 
-    // O(n) solution. Shorter time, more space.
-    use std::collections::HashMap;
-    let mut buffer_map: HashMap<i32, i32> = HashMap::new();
-
-    for i in 0..nums.len() {
-        let key = nums[i]; // current value
-        let value = target - key; // target value pair
-
-        println!("For i = {}, value = {}", i, value);
-
-        // Check if there is the key of value, because that means it was an array entry
-        if let Some(value_index) = buffer_map.get(&key) {
-            return vec![*value_index, i as i32]
-        }
-
-        // Insert an expected value for position. E.g expecting a 7 for the 2 at position 0. 
-        buffer_map.insert(value, i as i32);
+    let mut current = l1;
+    let mut cnt_l1 = 0;
+    while let Some(node) = current {
+        println!("{}", node.val);
+        // println!("{}", cnt_l1);
+        current = node.next;
+        cnt_l1 += 1;
     }
 
-    vec![]
+    // Check when cnt is 1, 
+
+    
+    
+    
+    None
 }
