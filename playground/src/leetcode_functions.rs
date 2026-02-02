@@ -1,3 +1,5 @@
+use core::num;
+
 // Definition for singly-linked list.
 #[derive(PartialEq, Eq, Clone, Debug)]
 pub struct ListNode {
@@ -17,26 +19,100 @@ impl ListNode {
 
 
 pub fn add_two_numbers(l1: Option<Box<ListNode>>, l2: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
-    // Constrains
-
     // The number of nodes in each linked list is in the range [1, 100].
     // 0 <= Node.val <= 9
     // It is guaranteed that the list represents a number that does not have leading zeros.
-    
 
-    let mut current = l1;
-    let mut cnt_l1 = 0;
-    while let Some(node) = current {
+    // Constrains
+    let max_number_of_nodes = 100;
+    let min_number_of_nodes = 1;
+
+    let max_node_value = 9;
+    let min_node_value = 0;
+
+    // buffers L1
+    let mut current_node_l1 = l1;
+    let mut number_of_nodes_l1_cnt = 0;
+    let mut l1_array = Vec::new();
+
+    // buffers L2
+    let mut current_node_l2 = l2;
+    let mut number_of_nodes_l2_cnt = 0;
+    let mut l2_array: Vec<i32> = Vec::new();
+    
+    // Getting arrays from linked lists
+    while let Some(node) = current_node_l1 {
         println!("{}", node.val);
-        // println!("{}", cnt_l1);
-        current = node.next;
-        cnt_l1 += 1;
+        // Verify if node value is in range
+        if node.val < min_node_value || node.val > max_node_value {
+            panic!("Node value is out of bounds");
+        }
+        current_node_l1 = node.next;
+        number_of_nodes_l1_cnt += 1;
+        l1_array.push(node.val);
     }
 
-    // Check when cnt is 1, 
+    while let Some(node) = current_node_l2 {
+        println!("{}", node.val);
+        // Verify if node value is in range
+        if node.val < min_node_value || node.val > max_node_value {
+            panic!("Node value is out of bounds");
+        }
+        current_node_l2 = node.next;
+        number_of_nodes_l2_cnt += 1;
+        l2_array.push(node.val);
+    }
 
+    // Debugging output
+    println!("Total nodes in l1: {}", number_of_nodes_l1_cnt);
+    println!("{:?}", l1_array);
+    println!("Total nodes in l2: {}", number_of_nodes_l2_cnt);
+    println!("{:?}", l2_array);
+
+    // Checks before proceeding
+    // Should be minimum length
+    if number_of_nodes_l1_cnt < min_number_of_nodes || number_of_nodes_l1_cnt > max_number_of_nodes {
+        panic!("The number of nodes in the linked list is out of bounds");
+    }
+    if number_of_nodes_l2_cnt < min_number_of_nodes || number_of_nodes_l2_cnt > max_number_of_nodes {
+        panic!("The number of nodes in the linked list is out of bounds");
+    }
+
+    // Check if the last node is not zero (no leading zeros)
+    if let Some(&last) = l1_array.last() {
+        if last == 0 && number_of_nodes_l1_cnt > 1 {
+            panic!("The list represents a number that has leading zeros");
+        }
+    }
+    if let Some(&last) = l2_array.last() {
+        if last == 0 && number_of_nodes_l2_cnt > 1 {
+            panic!("The list represents a number that has leading zeros");
+        }
+    }
+
+    // Processing:
+    let l1_number = l1_array.iter().rev().fold(0, |acc, &digit| acc * 10 + digit);
+    let l2_number = l2_array.iter().rev().fold(0, |acc, &digit| acc * 10 + digit);
+    let res = l1_number + l2_number;
+    println!("res number: {}", res);
+    let mut arr  = Vec::new();
+    let mut n = res;
     
-    
-    
-    None
+    while n > 0 { 
+      arr.push((n % 10) as i32);
+      n /= 10;
+    }
+
+    println!("res array: {:?}", arr);
+
+    // Final output linked list
+    let mut res_final: Option<Box<ListNode>> = None;
+    for x in arr.iter().rev() {
+        res_final = Some(Box::new(ListNode {
+            val: *x as i32,
+            next: res_final,
+        }));
+    }
+
+    res_final
 }
