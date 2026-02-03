@@ -7,6 +7,7 @@ fn main() {
     let mut l2: Option<Box<leetcode_functions::ListNode>> = None;
 
     for x in l1_list.iter().rev() {
+        println!("Adding digit {} to l1", x);
         l1 = Some(Box::new(leetcode_functions::ListNode {
             val: *x as i32,
             next: l1,
@@ -18,7 +19,6 @@ fn main() {
             val: *x as i32,
             next: l2,
         }));
-        println!("{:?}", l2);
     }
 
     println!("{:?}", l1);
